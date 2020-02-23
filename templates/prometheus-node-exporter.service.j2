@@ -1,0 +1,44 @@
+[Unit]
+Description=Prometheus Node Exporter
+Documentation=https://prometheus.io
+After=network.target
+Wants=network.target
+
+StartLimitIntervalSec=14400
+StartLimitBurst=10
+
+[Service]
+Restart=on-abnormal
+TimeoutStopSec=5s
+
+WorkingDirectory=/tmp
+
+User=root
+Group=root
+
+ProtectSystem=full
+PrivateTmp=true
+
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+
+SystemCallFilter=@system-service
+CapabilityBoundingSet=
+
+MemoryAccounting=true
+MemoryLimit=32M
+LimitNOFILE=4096
+LimitNPROC=512
+
+ExecStart=/usr/bin/prometheus-node-exporter \
+	--web.listen-address="{{ prometheus_node_exporter_listen_addr }}" \
+{% for item in prometheus_node_exporter_enabled_collectors %}
+	--collector.{{ item }} \
+{% endfor %}
+{% for item in prometheus_node_exporter_disabled_collectors %}
+	--no-collector.{{ item }} \
+{% endfor %}
+	--log.level=info
+
+[Install]
+WantedBy=multi-user.target

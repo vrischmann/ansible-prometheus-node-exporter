@@ -1,0 +1,43 @@
+- name: get the binary
+  get_url:
+    url: "https://github.com/prometheus/node_exporter/releases/download/v{{ prometheus_node_exporter_version }}/node_exporter-{{ prometheus_node_exporter_version }}.linux-amd64.tar.gz"
+    dest: "/var/cache/"
+    checksum: "sha256:{{ prometheus_node_exporter_checksum }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: unarchive the binary
+  unarchive:
+    src: "/var/cache/node_exporter-{{ prometheus_node_exporter_version }}.linux-amd64.tar.gz"
+    dest: "/var/cache/"
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
+
+- name: copy the binary
+  copy:
+    src: "/var/cache/node_exporter-{{ prometheus_node_exporter_version }}.linux-amd64/node_exporter"
+    dest: "/usr/bin/prometheus-node-exporter"
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
+
+- name: add the service
+  template:
+    src: prometheus-node-exporter.service.j2
+    dest: "/etc/systemd/system/prometheus-node-exporter.service"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart node exporter
+
+- name: start the node exporter
+  systemd:
+    name: prometheus-node-exporter
+    enabled: yes
+    daemon_reload: yes
+    state: started
