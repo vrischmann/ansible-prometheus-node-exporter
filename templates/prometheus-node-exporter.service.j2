@@ -16,13 +16,23 @@ WorkingDirectory=/tmp
 User=root
 Group=root
 
-ProtectSystem=full
+ProtectSystem=strict
+ProtectHome=true
+ProtectHostname=true
+ProtectControlGroups=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
 PrivateTmp=true
+PrivateUsers=true
+MemoryDenyWriteExecute=true
+LockPersonality=true
 
 RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
 RestrictNamespaces=true
 
-SystemCallFilter=@system-service
+SystemCallArchitectures=native
+SystemCallFilter=@system-service adjtimex
 CapabilityBoundingSet=
 
 MemoryAccounting=true
