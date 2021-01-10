@@ -21,7 +21,7 @@ Role Variables
 
 
 Example
-----------------
+-------
 
 ```
     - hosts: servers
