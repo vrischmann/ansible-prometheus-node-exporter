@@ -1,5 +1,6 @@
 galaxy_info:
   author: Vincent Rischmann
+  description: Install prometheus-node-exporter
 
   license: MIT
 
