@@ -1,45 +1,45 @@
-- name: get the binary
-  get_url:
-    url: "https://github.com/prometheus/node_exporter/releases/download/v{{ prometheus_node_exporter_version }}/node_exporter-{{ prometheus_node_exporter_version }}.linux-{{ prometheus_node_exporter_architecture }}.tar.gz"
+- name: Get the binary
+  ansible.builtin.get_url:
+    url: "https://github.com/prometheus/node_exporter/releases/download/v{{ prometheus_node_exporter_version }}/node_exporter-{{ prometheus_node_exporter_version }}.linux-{{ prometheus_node_exporter_architecture }}.tar.gz" # noqa: yaml[line-length]
     dest: "/var/cache/"
     checksum: "sha256:{{ prometheus_node_exporter_checksum }}"
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
 
-- name: unarchive the binary
-  unarchive:
+- name: Unarchive the binary
+  ansible.builtin.unarchive:
     src: "/var/cache/node_exporter-{{ prometheus_node_exporter_version }}.linux-{{ prometheus_node_exporter_architecture }}.tar.gz"
     dest: "/var/cache/"
-    remote_src: yes
+    remote_src: true
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
 
-- name: copy the binary
-  copy:
+- name: Copy the binary
+  ansible.builtin.copy:
     src: "/var/cache/node_exporter-{{ prometheus_node_exporter_version }}.linux-{{ prometheus_node_exporter_architecture }}/node_exporter"
     dest: "/usr/bin/prometheus-node-exporter"
-    remote_src: yes
+    remote_src: true
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
   notify:
-    - restart node exporter
+    - Restart node exporter
 
-- name: add the service
-  template:
+- name: Add the service
+  ansible.builtin.template:
     src: prometheus-node-exporter.service.j2
     dest: "/etc/systemd/system/prometheus-node-exporter.service"
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   notify:
-    - restart node exporter
+    - Restart node exporter
 
-- name: start the node exporter
-  systemd:
+- name: Start the node exporter
+  ansible.builtin.systemd:
     name: prometheus-node-exporter
-    enabled: yes
-    daemon_reload: yes
+    enabled: true
+    daemon_reload: true
     state: started
