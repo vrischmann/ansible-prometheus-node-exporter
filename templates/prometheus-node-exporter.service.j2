@@ -41,7 +41,9 @@ LimitNOFILE={{ prometheus_node_exporter_limit_nofile|default('4096') }}
 LimitNPROC={{ prometheus_node_exporter_limit_nproc|default('512') }}
 
 ExecStart=/usr/bin/prometheus-node-exporter \
-	--web.listen-address="{{ prometheus_node_exporter_listen_addr }}" \
+{% for item in prometheus_node_exporter_listen_addresses|default([]) %}
+	--web.listen-address="{{ item }}" \
+{% endfor %}
 {% for item in prometheus_node_exporter_enabled_collectors|default([]) %}
 	--collector.{{ item }} \
 {% endfor %}
