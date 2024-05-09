@@ -1,8 +1,8 @@
 [Unit]
 Description=Prometheus Node Exporter
 Documentation=https://prometheus.io
-After=network.target {{ prometheus_node_exporter_service_extra_after|default(omit) }}
-Wants=network.target {{ prometheus_node_exporter_service_extra_wants|default(omit) }}
+After=network.target {{ prometheus_node_exporter_service_extra_after|default("") }}
+Wants=network.target {{ prometheus_node_exporter_service_extra_wants|default("") }}
 
 StartLimitIntervalSec=14400
 StartLimitBurst=10
