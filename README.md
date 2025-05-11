@@ -24,6 +24,7 @@ Role Variables
 | `prometheus_node_exporter_limit_nproc` | no | LimitNPROC for the systemd service. Defaults to 512 |
 | `prometheus_node_exporter_service_extra_after` | no | Appends to the After= property of the service. Useful to make sure your VPN is up if you need to listen on its interface |
 | `prometheus_node_exporter_service_extra_wants` | no | Appends to the Wants= property of the service. Useful to make sure your VPN is up if you need to listen on its interface |
+| `prometheus_node_exporter_service_extra_requires` | no | Appends to the Requires= property of the service. Useful to make sure your VPN is up if you need to listen on its interface |
 
 Example
 -------

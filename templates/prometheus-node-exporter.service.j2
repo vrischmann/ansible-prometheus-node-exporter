@@ -3,6 +3,7 @@ Description=Prometheus Node Exporter
 Documentation=https://prometheus.io
 After=network.target {{ prometheus_node_exporter_service_extra_after|default("") }}
 Wants=network.target {{ prometheus_node_exporter_service_extra_wants|default("") }}
+Requires=network.target {{ prometheus_node_exporter_service_extra_requires|default("") }}
 
 StartLimitIntervalSec=14400
 StartLimitBurst=10
